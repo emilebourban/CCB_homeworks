@@ -96,7 +96,7 @@ def main():
         # Writes data to file
         with open('results.log', 'a') as f:
             f.write("{:<8.5f}\t{:<8.5f}\t{:<8.5f}\n".format(float(forces[i]), means[-1], stds[-1]))
-        print(means, stds)
+        print(float(forces[i]), means[-1], stds[-1])
 
 
 if __name__ == "__main__":
