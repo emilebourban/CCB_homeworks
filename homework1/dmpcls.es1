@@ -1,0 +1,44 @@
+
+Message 1 at time 0
+ severity info
+Velocity distn
+Temperature = 1
+Mean Vel    = 6.79718e-17 -1.49491e-17 -5.66103e-17 
+Mean Sq Vel = 0.991859 0.994518 1.01362 
+Var Vel     = 0.991859 0.994518 1.01362
+
+Message 2 at time 1
+ severity info
+Beads  W (type 0) hidden
+
+Message 3 at time 1
+ severity info
+Camera coordinates are now 15      -10     -5      and target coordinates are 15      5       5     
+
+Message 4 at time 1
+ severity info
+Default current state format changed to Paraview
+
+Message 5 at time 1
+ severity constraint
+Command target head holds 1 beads BH (type 2) in region SimBox
+
+Message 6 at time 1
+ severity constraint
+Command target tail holds 1 beads BT (type 3) in region SimBox
+
+Message 7 at time 1000
+ severity constraint
+Constant force activity fh applied to command target head with parameters 1 0 0  100
+
+Message 8 at time 1000
+ severity constraint
+Constant force activity ft applied to command target tail with parameters 1 0 0  -100
+
+Message 9 at time 5000
+ severity constraint
+Activity fh removed from active command target head (0 activities left) head removed from active command targets
+
+Message 10 at time 5000
+ severity constraint
+Activity ft removed from active command target tail (0 activities left) tail removed from active command targets
