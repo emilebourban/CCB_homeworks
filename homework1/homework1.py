@@ -5,20 +5,6 @@ import subprocess
 import numpy as np
 
 
-def get_ee_length():
-    
-    eel_files = [file for file in os.listdir() if file.startswith('eeldata')]
-    eel = []
-
-    for i, file in enumerate(eel_files):
-        with open(file, 'rt') as f:
-            for line in f:
-                if len(line.strip().split()) > 0:
-                    eel.append(line.strip().split())
-
-    return eel
-
-
 def clean_cwd():
 
     # Generator of the files generated for each runs
