@@ -24,7 +24,7 @@ def clean_cwd():
     print('')
     
     
-def change_force(filename, force, seed=None):
+def change_input(filename, force, force_start_time=1000, force_end_time=5000, seed=None):
     """Creates a new dmpci.es1_sim with updated force values on the ends of the polymer"""
 
     try:
@@ -42,6 +42,7 @@ def change_force(filename, force, seed=None):
                         c_line = line
                         c_line = c_line.strip().split()
                         c_line[-1] = sign *force
+                        c_line[2] = force_start_time
 
                         # Converts list to list[str]
                         c_line = list(map(lambda x: str(x), c_line))
@@ -50,7 +51,18 @@ def change_force(filename, force, seed=None):
 
                         # Gets next line
                         line = next(rf)
-                
+                    wf.write('\n')
+
+                elif line.startswith('Command RemoveCommandTargetActivity'):
+                    c_line = line
+                    c_line = c_line.strip().split()
+                    c_line[2] = force_end_time
+                    
+                    # Converts list to list[str]
+                    c_line = list(map(lambda x: str(x), c_line))
+
+                    wf.write('\t'.join(c_line)+'\n')
+
                 elif line.startswith('RNGSeed') and seed:
                     wf.write('{:<12}{:<,d}\n'.format('RNGSeed',seed))
                 else:
@@ -87,7 +99,7 @@ def main():
     stds = []
     forces = np.logspace(-1, 0, 2)
     for i in range(forces.shape[0]):
-        change_force('dmpci.es1', forces[i],-10)
+        change_input('dmpci.es1', forces[i], 1200, 4000)
 
         # Starts simulation
         subprocess.run(r"./dpd-w10.exe es1_sim")
