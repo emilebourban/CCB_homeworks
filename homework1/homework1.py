@@ -5,21 +5,8 @@ import subprocess
 import numpy as np
 
 
-def get_ee_length():
-    
-    eel_files = [file for file in os.listdir() if file.startswith('eeldata')]
-    eel = []
-
-    for i, file in enumerate(eel_files):
-        with open(file, 'rt') as f:
-            for line in f:
-                if len(line.strip().split()) > 0:
-                    eel.append(line.strip().split())
-
-    return eel
-
-
 def clean_cwd():
+    """Removes most of the simulation files from the current directory"""
 
     # Generator of the files generated for each runs
     del_files = (file for file in os.listdir() if file.endswith('.vtk')
@@ -39,6 +26,7 @@ def clean_cwd():
     
     
 def change_force(filename, force):
+    """Creates a new dmpci.es1_sim with updated force values on the ends of the polymer"""
 
     try:
         os.remove(filename+'_sim')
@@ -69,6 +57,7 @@ def change_force(filename, force):
 
 
 def get_lengths(filename, means, stds):
+    """Parses 'as' file to get the EE length mean and std"""
 
     with open(filename, 'rt') as f:
         for line in f:
@@ -77,22 +66,24 @@ def get_lengths(filename, means, stds):
                 line = next(f)
                 means.append(float(line.split()[0]))
                 stds.append(float(line.split()[1]))
-                return
+                break
 
         else:
             raise EOFError('No spring EE distance found')
 
 
 def main():
+
     #Removes previous simulation files
     clean_cwd()
+
     # Creates to store the simulation values
-    with open('results.log', 'wt') as f:
+    with open('results.log', 'wt') as f:    
         f.write("{:<8s}\t{:<8s}\t{:<8s}\n".format("Force", "Mean", "Std"))
     
     means = []
     stds = []
-    forces = np.linspace(0, 100, 10)
+    forces = np.logspace(-1, 3, 20)
     for i in range(forces.shape[0]):
         change_force('dmpci.es1', forces[i])
 
@@ -102,6 +93,7 @@ def main():
         #Get EE length
         get_lengths('dmpcas.es1_sim', means, stds)
 
+        # Writes data to file
         with open('results.log', 'a') as f:
             f.write("{:<8.5f}\t{:<8.5f}\t{:<8.5f}\n".format(float(forces[i]), means[-1], stds[-1]))
         print(means, stds)
@@ -109,3 +101,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
