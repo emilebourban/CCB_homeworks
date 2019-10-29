@@ -60,8 +60,8 @@ Command SetCurrentStateDefaultFormat  1    Paraview
 Command SelectBeadTypeInSimBox        1  head  BH
 Command SelectBeadTypeInSimBox        1  tail  BT
 
-Command ConstantForceOnTarget         1000  head  fh   1 0 0   100.0
-Command ConstantForceOnTarget         1000  tail  ft   1 0 0   -100.0
+Command ConstantForceOnTarget         1000  head  fh   1 0 0   1.0
+Command ConstantForceOnTarget         1000  tail  ft   1 0 0   -1.0
 
 Command RemoveCommandTargetActivity   5000   fh
 Command RemoveCommandTargetActivity   5000   ft
