@@ -64,7 +64,7 @@ def change_input(filename, force, force_start_time=1000, force_end_time=5000, se
                     wf.write('\t'.join(c_line)+'\n')
 
                 elif line.startswith('RNGSeed') and seed:
-                    wf.write('{:<12}{:<,d}\n'.format('RNGSeed',seed))
+                    wf.write('{:<12}{:<}\n'.format('RNGSeed',seed))
                 else:
                     wf.write(line)
 
@@ -99,7 +99,10 @@ def main():
     stds = []
     forces = np.logspace(-1, 0, 2)
     for i in range(forces.shape[0]):
-        change_input('dmpci.es1', forces[i], 1200, 4000)
+        
+        force_start_time, force_end_time = 1000, 5000
+        seed=-4436
+        change_input('dmpci.es1', forces[i], force_start_time, force_end_time, seed)
 
         # Starts simulation
         subprocess.run(r"./dpd-w10.exe es1_sim")
@@ -117,7 +120,10 @@ def main():
 
         # Writes time series to file
         with open('time_series.log', 'at') as file:
-            file.write('\nForce: {}\tTimestep: {}\n{}'.format(forces[i], times[0],'\t'.join(['{:<8.5f}'.format(el) for el in lengths])))
+            
+            file.write('Force: {}\tTimestep: {}\tForceStart: {}\tForceStop: {}\tSeed: {}\n{}\n'\
+            .format(forces[i], times[0], force_start_time, force_end_time, seed,
+            '\t'.join(['{:<8.5f}'.format(el) for el in lengths])))
 
         # Writes data to file
         with open('results.log', 'a') as f:
