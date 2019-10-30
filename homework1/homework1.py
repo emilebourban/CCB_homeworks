@@ -38,16 +38,14 @@ def change_input(filename, force, force_start_time=1000, force_end_time=5000, se
             for line in rf:
                 if line.startswith('Command ConstantForceOnTarget'):
                     for sign in [1, -1]:
-                        # Copies current line
-                        c_line = line
-                        c_line = c_line.strip().split()
-                        c_line[-1] = sign *force
-                        c_line[2] = force_start_time
+                        
+                        line = line.strip().split()
+                        line[-1] = sign *force
+                        line[2] = force_start_time
 
                         # Converts list to list[str]
-                        c_line = list(map(lambda x: str(x), c_line))
-
-                        wf.write('\t'.join(c_line) +'\n')
+                        line = list(map(lambda x: str(x), line))
+                        wf.write('\t'.join(line) +'\n')
 
                         # Gets next line
                         line = next(rf)
@@ -75,6 +73,7 @@ def get_lengths(filename, means, stds):
 
     with open(filename, 'rt') as f:
         for line in f:
+            
             if line.startswith('Spring EE distance'):
 
                 line = next(f)
@@ -97,9 +96,9 @@ def main():
     
     means = []
     stds = []
-    forces = np.linspace(0, 100, 20)
+    forces = np.linspace(0, 100, 2)
     np.random.seed(0)
-    seeds = np.random.randint(-9999,-1000,size=5)
+    seeds = np.random.randint(-9999,-1000,size=1)
     print(seeds)
     for i in range(forces.shape[0]):
         for seed in seeds:
