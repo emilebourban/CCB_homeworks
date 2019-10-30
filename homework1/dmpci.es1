@@ -9,34 +9,41 @@ State	random
 
 
 Bead  W
-      0.5
-      25
-      4.5	
+    0.5
+    25
+    4.5	
 
 Bead  B
-      0.5
-      25    25
-      4.5   4.5
+    0.5
+    25    25
+    4.5   4.5
 
 Bead  BH
-      0.5
-      25   25   25
-      4.5  4.5  4.5
+    0.5
+    25   25   25
+    4.5  4.5  4.5
 
 Bead  BT
-      0.5
-      25   25   25   25
-      4.5  4.5  4.5  4.5
+    0.5
+    25   25   25   25
+    4.5  4.5  4.5  4.5
 
-
+Bead S 
+    0.5
+    25   25   25   25   10
+    4.5  4.5  4.5  4.5  4.5
 
 Bond  B B  128.0  0.5
 Bond  BH B 128.0  0.5
 Bond  BT B 128.0  0.5
 
+Bond  S BH 128.0  0.5
+Bond  S B 128.0  0.5
+Bond  S BT 128.0  0.5
+
 
 Polymer	Water    0.9998   " (W) "
-Polymer Spring   0.0002   " (BH B B B B B B B B B B BT) "
+Polymer Spring   0.0002   " (BH B B S B B S B B S B BT) "
 
 Box         30  10  10       1  1  1
 Density		3
