@@ -22,14 +22,28 @@ with open('time_series.log') as file:
 
 time_series = np.array(time_series)
 
+forces_set = set(forces)
 
-for i, force in enumerate(forces):
-    margin = 15
-    start_ind = int(start_time[i]//timestep[i] + margin)
-    end_ind = int(end_times[i]//timestep[i] - margin)
+margin = 20
 
-    mean = time_series[i,start_ind:end_ind].mean()
-    std = time_series[i,start_ind:end_ind].std()
-    print(force, mean, std)
+results = []
 
+for force in forces_set:
+    temp = []
+    for i, f in enumerate(forces):
+        if force == f:
+            
+            start_ind = int(start_time[i]//timestep[i] + margin)
+            end_ind = int(end_times[i]//timestep[i] - margin)
 
+            temp.append(time_series[i,start_ind:end_ind].mean())
+            # std = time_series[i,start_ind:end_ind].std()
+    temp = np.array(temp)
+    results.append([force, temp.mean(), temp.std()])
+
+results = np.array(results)
+# plot force vs length with std
+plt.figure()
+plt.errorbar(results[:,0], results[:,1], yerr=results[:,2], ecolor='k', elinewidth=0.7, capthick=0.7, capsize=2)
+plt.title("Length-Force plot")
+plt.show()

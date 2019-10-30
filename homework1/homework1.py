@@ -97,38 +97,40 @@ def main():
     
     means = []
     stds = []
-    forces = np.logspace(-1, 0, 2)
+    forces = np.linspace(0, 100, 20)
+    np.random.seed(0)
+    seeds = np.random.randint(-9999,-1000,size=5)
+    print(seeds)
     for i in range(forces.shape[0]):
-        
-        force_start_time, force_end_time = 1000, 5000
-        seed=-4436
-        change_input('dmpci.es1', forces[i], force_start_time, force_end_time, seed)
+        for seed in seeds:
+            force_start_time, force_end_time = 1000, 5000
+            change_input('dmpci.es1', forces[i], force_start_time, force_end_time, seed)
 
-        # Starts simulation
-        subprocess.run(r"./dpd-w10.exe es1_sim")
+            # Starts simulation
+            subprocess.run(r"./dpd-w10.exe es1_sim")
 
-        #Get EE length
-        get_lengths('dmpcas.es1_sim', means, stds)
+            #Get EE length
+            get_lengths('dmpcas.es1_sim', means, stds)
 
-        #Get time series for curent force
-        times = []
-        lengths = []
-        with open('dmpchs.es1_sim','rt') as file:
-            for line in file:
-                times.append(int(line.split()[0]))
-                lengths.append(float(line.split()[-1]))
+            #Get time series for curent force
+            times = []
+            lengths = []
+            with open('dmpchs.es1_sim','rt') as file:
+                for line in file:
+                    times.append(int(line.split()[0]))
+                    lengths.append(float(line.split()[-1]))
 
-        # Writes time series to file
-        with open('time_series.log', 'at') as file:
-            
-            file.write('Force: {}\tTimestep: {}\tForceStart: {}\tForceStop: {}\tSeed: {}\n{}\n'\
-            .format(forces[i], times[0], force_start_time, force_end_time, seed,
-            '\t'.join(['{:<8.5f}'.format(el) for el in lengths])))
+            # Writes time series to file
+            with open('time_series.log', 'at') as file:
+                
+                file.write('Force: {}\tTimestep: {}\tForceStart: {}\tForceStop: {}\tSeed: {}\n{}\n'\
+                .format(forces[i], times[0], force_start_time, force_end_time, seed,
+                '\t'.join(['{:<8.5f}'.format(el) for el in lengths])))
 
-        # Writes data to file
-        with open('results.log', 'a') as f:
-            f.write("{:<8.5f}\t{:<8.5f}\t{:<8.5f}\n".format(float(forces[i]), means[-1], stds[-1]))
-        print(float(forces[i]), means[-1], stds[-1])
+            # Writes data to file
+            with open('results.log', 'a') as f:
+                f.write("{:<8.5f}\t{:<8.5f}\t{:<8.5f}\n".format(float(forces[i]), means[-1], stds[-1]))
+            print(float(forces[i]), means[-1], stds[-1])
 
 
 if __name__ == "__main__":
